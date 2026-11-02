@@ -3,6 +3,7 @@ package com.basefinder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 public final class HudScreen extends Screen {
@@ -43,8 +44,10 @@ public final class HudScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 0) {
+    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+        double mouseX = event.x();
+        double mouseY = event.y();
+        if (event.buttonInfo().button() == 1) {
             int top = (height - 250) / 2 + 50;
             int row = (int)((mouseY - top) / 24);
             if (mouseX >= (width - 330) / 2 && mouseX <= (width + 330) / 2 && row >= 0 && row < 7) {
@@ -60,7 +63,7 @@ public final class HudScreen extends Screen {
                 return true;
             }
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(event, doubleClick);
     }
 
     @Override public boolean isPauseScreen() { return false; }
