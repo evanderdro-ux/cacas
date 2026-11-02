@@ -132,7 +132,7 @@ public final class Scanner {
         List<Marker> out = new ArrayList<>();
         List<Marker> bases = new ArrayList<>();
 
-        for (Cell c : cells.values()) {
+        if (BaseFinderClient.detectorEnabled) for (Cell c : cells.values()) {
             if (c.isBase() && c.minX != Integer.MAX_VALUE) {
                 bases.add(new Marker(c.minX - 0.5, c.minY - 0.5, c.minZ - 0.5,
                         c.maxX + 1.5, c.maxY + 1.5, c.maxZ + 1.5,
@@ -151,7 +151,7 @@ public final class Scanner {
 
                 if (k == BlockKind.DECOR && !inBase) continue;
 
-                if (k == BlockKind.TRANSPARENT) {
+                if (k == BlockKind.TRANSPARENT && BaseFinderClient.transparentEnabled) {
                     float[] v = Config.VIOLET;
                     out.add(new Marker(h.x() - 0.01, h.y() - 0.01, h.z() - 0.01,
                             h.x() + 1.01, h.y() + 1.01, h.z() + 1.01,
