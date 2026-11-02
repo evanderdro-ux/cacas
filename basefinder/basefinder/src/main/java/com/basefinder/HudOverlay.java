@@ -61,6 +61,16 @@ public final class HudOverlay {
         }
         g.fill(cx - 1, cy - 20, cx + 1, cy + 20, 0x554D3A65);
         g.fill(cx - 20, cy - 1, cx + 20, cy + 1, 0x554D3A65);
+        double px = mc.player.getX(), pz = mc.player.getZ();
+        for (Marker m : BaseFinderClient.markers) {
+            if (!m.outline() || m.thickness() < 0.2f) continue;
+            double dx = (m.x0() + m.x1()) * 0.5 - px;
+            double dz = (m.z0() + m.z1()) * 0.5 - pz;
+            if (dx * dx + dz * dz > 96.0 * 96.0) continue;
+            int rx = cx + (int)Math.round(dx * 0.25);
+            int rz = cy + (int)Math.round(dz * 0.25);
+            g.fill(rx - 2, rz - 2, rx + 3, rz + 3, 0xFFFF5A5A);
+        }
         g.fill(cx - 2, cy - 2, cx + 3, cy + 3, 0xFFFF5A8A);
         g.text(mc.font, "N", cx - 3, cy - 42, 0xFFE6D9F5, false);
     }
