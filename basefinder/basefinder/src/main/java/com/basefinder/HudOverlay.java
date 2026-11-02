@@ -141,6 +141,10 @@ public final class HudOverlay {
         g.text(mc.font, "BASES " + bases, x + 9, y + 27, 0xFFFF6B82, false);
         g.text(mc.font, "CHUNKS " + chunks, x + 70, y + 27, 0xFFFFC45B, false);
         g.text(mc.font, "ESP " + containers, x + 9, y + 43, 0xFF72EAC0, false);
+        if (BaseFinderClient.labelsEnabled) {
+            String kinds = "CHEST  BARREL  SHULKER";
+            g.text(mc.font, kinds, x + 58, y + 43, 0xFFBFAAD7, false);
+        }
         if (editing) tag(g, mc, x, y, "TARGETS");
     }
 
