@@ -33,6 +33,7 @@ public class BaseFinderClient implements ClientModInitializer {
 
     @Override public void onInitializeClient() {
         Config.load();
+        HudLayout.load();
         KeyMapping.Category category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "main"));
         toggleKey = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.basefinder.toggle",
                 InputConstants.Type.KEYBOARD, InputConstants.KEY_B, category));
