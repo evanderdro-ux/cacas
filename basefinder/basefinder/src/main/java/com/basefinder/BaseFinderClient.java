@@ -15,14 +15,24 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 public class BaseFinderClient implements ClientModInitializer {
     public static final String MOD_ID = "basefinder";
     public static volatile boolean enabled = false;
-    public static volatile boolean radarEnabled = true, chunkMapEnabled = true;
-    public static volatile boolean detectorEnabled = true, transparentEnabled = true;
-    public static volatile boolean hotkeyListEnabled = true, hudEnabled = true;
+    public static volatile boolean hudEnabled = true;
+    public static volatile boolean radarEnabled = true;
+    public static volatile boolean chunkMapEnabled = true;
+    public static volatile boolean hotkeyListEnabled = true;
+
+    public static volatile boolean containerEspEnabled = true;
+    public static volatile boolean baseBoxesEnabled = true;
+    public static volatile boolean chunkBoxesEnabled = true;
+    public static volatile boolean tracersEnabled = false;
+    public static volatile boolean transparentEnabled = true;
+    public static volatile boolean labelsEnabled = true;
+
     public static volatile List<Marker> markers = List.of();
     private static KeyMapping toggleKey, menuKey;
     private static int tick;
 
     @Override public void onInitializeClient() {
+        Config.load();
         KeyMapping.Category category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "main"));
         toggleKey = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.basefinder.toggle",
                 InputConstants.Type.KEYBOARD, InputConstants.KEY_B, category));
@@ -36,20 +46,26 @@ public class BaseFinderClient implements ClientModInitializer {
 
     public static void setScan(boolean value) {
         enabled = value;
-        if (!value) { markers = List.of(); Scanner.clear(); }
+        if (!value) {
+            markers = List.of();
+            Scanner.clear();
+        }
     }
 
     private void onTick(Minecraft client) {
         while (toggleKey.consumeClick()) {
             setScan(!enabled);
             if (client.player != null) client.player.sendSystemMessage(Component.literal(
-                    "BaseFinder: " + (enabled ? "ACTIVADO" : "DESACTIVADO")));
+                    "BaseFinder: " + (enabled ? "ACTIVADO" : "PAUSADO")));
         }
         while (menuKey.consumeClick()) {
             if (client.player != null && client.gui.screen() == null) client.gui.setScreen(new HudScreen());
         }
         if (!enabled || client.player == null || client.level == null) return;
+
         Scanner.tick(client);
-        if (++tick % 10 == 0) markers = Scanner.buildMarkers(client.player.getX(), client.player.getZ());
+        if (++tick % 5 == 0) {
+            markers = Scanner.buildMarkers(client.player.getX(), client.player.getZ());
+        }
     }
 }
