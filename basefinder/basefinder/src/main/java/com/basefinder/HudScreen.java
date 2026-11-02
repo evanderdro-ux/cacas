@@ -9,7 +9,7 @@ import net.minecraft.util.Util;
 /** Centro de control con secciones visuales y valores ajustables. */
 public final class HudScreen extends Screen {
     private static final int PANEL_W = 556;
-    private static final int PANEL_H = 386;
+    private static final int PANEL_H = 410;
 
     public HudScreen() {
         super(Component.literal("BaseFinder Control Center"));
@@ -63,8 +63,8 @@ public final class HudScreen extends Screen {
         }
 
         section(g, rx, y + 201, 254, "AJUSTES DEL DETECTOR");
-        setting(g, mouseX, mouseY, rx, y + 224, "Radio de escaneo", Config.SCAN_RADIUS_CHUNKS + " chunks");
-        setting(g, mouseX, mouseY, rx, y + 252, "Distancia ESP", Config.RENDER_RANGE + " bloques");
+        setting(g, mouseX, mouseY, rx, y + 224, "Radio de escaneo", Config.SCAN_RADIUS_CHUNKS + "ch");
+        setting(g, mouseX, mouseY, rx, y + 252, "Distancia ESP", Config.RENDER_RANGE + "b");
         setting(g, mouseX, mouseY, rx, y + 280, "Umbral de base", Integer.toString(Config.BASE_SCORE));
         setting(g, mouseX, mouseY, rx, y + 308, "Altura maxima", Integer.toString(Config.MAX_Y));
         setting(g, mouseX, mouseY, rx, y + 336, "Chunks por tick", Integer.toString(Config.CHUNKS_PER_TICK));
@@ -76,7 +76,7 @@ public final class HudScreen extends Screen {
         g.text(font, "M  abrir este menu", lx + 10, y + 329, 0xFFBDAED0, false);
         g.text(font, "El escaneo solo usa chunks ya cargados.", lx + 10, y + 341, 0xFF8DDBB7, false);
 
-        int ey = y + 357;
+        int ey = y + 365;
         g.fill(rx, ey, rx + 254, ey + 23, 0xFF65368C);
         g.outline(rx, ey, 254, 23, 0xFFBD84EF);
         g.text(font, "EDITAR / MOVER HUD", rx + 67, ey + 7, 0xFFFFFFFF, true);
@@ -103,10 +103,10 @@ public final class HudScreen extends Screen {
     private void setting(GuiGraphicsExtractor g, int mx, int my, int x, int y, String name, String value) {
         g.fill(x, y, x + 254, y + 25, 0xFF18131F);
         g.text(font, name, x + 8, y + 8, 0xFFD8CBE6, false);
-        g.fill(x + 164, y + 3, x + 184, y + 22, hover(mx, my, x + 164, y + 3, 20, 19) ? 0xFF75489A : 0xFF382A49);
-        g.text(font, "-", x + 171, y + 8, 0xFFFFFFFF, true);
-        g.fill(x + 188, y + 3, x + 246, y + 22, 0xFF2A2035);
-        g.text(font, value, x + 192, y + 8, 0xFFF0E3FA, false);
+        g.fill(x + 158, y + 3, x + 178, y + 22, hover(mx, my, x + 158, y + 3, 20, 19) ? 0xFF75489A : 0xFF382A49);
+        g.text(font, "-", x + 165, y + 8, 0xFFFFFFFF, true);
+        g.fill(x + 180, y + 3, x + 226, y + 22, 0xFF2A2035);
+        g.text(font, value, x + 184, y + 8, 0xFFF0E3FA, false);
         g.fill(x + 230, y + 3, x + 250, y + 22, hover(mx, my, x + 230, y + 3, 20, 19) ? 0xFF75489A : 0xFF382A49);
         g.text(font, "+", x + 236, y + 8, 0xFFFFFFFF, true);
     }
@@ -137,7 +137,7 @@ public final class HudScreen extends Screen {
         else if (hover(mx, my, rx, y + 280, 254, 25)) adjust(2, mx, rx, y + 280);
         else if (hover(mx, my, rx, y + 308, 254, 25)) adjust(3, mx, rx, y + 308);
         else if (hover(mx, my, rx, y + 336, 254, 25)) adjust(4, mx, rx, y + 336);
-        else if (hover(mx, my, rx, y + 357, 254, 23)) {
+        else if (hover(mx, my, rx, y + 365, 254, 23)) {
             minecraft.gui.setScreen(new HudEditorScreen());
             return true;
         } else return super.mouseClicked(event, doubleClick);
@@ -148,8 +148,10 @@ public final class HudScreen extends Screen {
     }
 
     private void adjust(int option, double mouseX, int x, int y) {
-        boolean plus = mouseX >= x + 230;
-        int direction = plus ? 1 : -1;
+        if (mouseX >= x + 230) { /* increase */ }
+        else if (mouseX >= x + 158) { /* decrease */ }
+        else return;
+        int direction = mouseX >= x + 230 ? 1 : -1;
         switch (option) {
             case 0 -> Config.SCAN_RADIUS_CHUNKS = clamp(Config.SCAN_RADIUS_CHUNKS + direction, 2, 20);
             case 1 -> Config.RENDER_RANGE = clamp(Config.RENDER_RANGE + direction * 16, 32, 256);
