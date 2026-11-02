@@ -31,7 +31,7 @@ public class BaseFinderClient implements ClientModInitializer {
 
         toggleKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.basefinder.toggle",
-                InputConstants.Type.KEYSYM,
+                InputConstants.Type.KEYBOARD,
                 InputConstants.KEY_B,
                 category));
 
