@@ -3,8 +3,8 @@
   "id": "basefinder",
   "version": "${version}",
   "name": "Base Finder",
-  "description": "Resalta cofres, shulkers, bloques transparentes (borde violeta) y zonas que parecen bases.",
-  "authors": ["tu"],
+  "description": "HUD configurable, radar, mapa de chunks y marcadores ESP de contenedores y zonas sospechosas.",
+  "authors": ["evanderdro-ux"],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
